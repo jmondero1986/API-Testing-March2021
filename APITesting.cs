@@ -1,3 +1,5 @@
+using API_Testing_March2021.MODEL;
+using Newtonsoft.Json;
 using NUnit.Framework;
 using RestSharp;
 using System;
@@ -6,16 +8,39 @@ namespace API_Testing_March2021
 {
     public class Tests
     {
-        [Test]
-        public void TestCase_POST()
+        [TestCase ("Test")]
+        public void TestCase_POST(string fname)
+
 
 
         {
-            string postBody = "{\r\n  \"addressLine1\": \"COCKAYNE CRESCENT\",\r\n  \"addressLine2\": \"Sunnynook\",\r\n  \"city\": \"AUCKLAND\",\r\n  \"comment\": \"API TESTING DONE\",\r\n  \"email\": \"julia@gmail.com\",\r\n  \"firstName\": \"ABIGAIL\",\r\n  \"id\": 0,\r\n  \"itemNumber\": 0,\r\n  \"lastName\": \"MONDERO\",\r\n  \"phone\": \"0210848080\",\r\n  \"state\": \"AL\",\r\n  \"zipCode\": \"061102\"\r\n}\r\n\r\n";
-            IRestResponse response = POST(postBody);
+            //string postBody = "{\r\n  \"addressLine1\": \"Cockayne\",\r\n  \"addressLine2\": \"Sunnynook\",\r\n  \"city\": \"string\",\r\n  \"comment\": \"string\",\r\n  \"email\": \"julia@gmail.com\",\r\n  \"firstName\": \"Julia Abigail\",\r\n  \"id\": 0,\r\n  \"itemNumber\": 0,\r\n  \"lastName\": \"Mondero\",\r\n  \"phone\": \"0210848080\",\r\n  \"state\": \"AL\",\r\n  \"zipCode\": \"061102\"\r\n}\r\n\r\n";
+
+            /*
+             
+             string abc = null;
+            TestContext.WriteLine(abc ?? "123");
+            abc = "111";
+            estContext.WriteLine(abc ?? "123");
+             
+             */
+
+            //Changing the name to new one, but will call all the default value
+            // BillingOrder expectedData = new BillingOrder(firstName: "Julie");
+
+            BillingOrder expectedData = new BillingOrder();
+
+            //CONVERT ORDER TO JSON
+            var jsonBody = JsonConvert.SerializeObject(expectedData);
+            IRestResponse response = POST(jsonBody);
             TestContext.WriteLine(response.Content);
 
+            //Deserialize
 
+            BillingOrder actualData  = JsonConvert.DeserializeObject<BillingOrder>(response.Content);
+            TestContext.WriteLine(actualData.firstName);
+            Assert.AreEqual(expectedData.firstName, actualData.firstName);
+            Assert.AreEqual(expectedData.lastName, actualData.lastName);
         }
 
         //API METHODS
