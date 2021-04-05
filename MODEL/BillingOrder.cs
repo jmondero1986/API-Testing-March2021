@@ -7,6 +7,7 @@ namespace API_Testing_March2021.MODEL
 {
     class BillingOrder
     {
+        
         public string firstName;
         public string lastName;
         public string email;
@@ -18,7 +19,7 @@ namespace API_Testing_March2021.MODEL
         public string zipCode;
         public string comment;
         public string itemNumber;
-
+        public string id;
 
 
         //creating the default value
@@ -32,15 +33,17 @@ namespace API_Testing_March2021.MODEL
             string state = null,
             string zipCode = null,
             string comment = null,
-            string itemNumber = null) 
+            string itemNumber = null,
+            string id = null) 
         
         {
 
-            //this.firstName = firstName ?? "Julie Ann";
+            this.firstName = firstName ?? "Julie Ann";
             //generating random data everytime (TestContext.CurrentContext.Random.GetString()
-            this.firstName = firstName ?? TestContext.CurrentContext.Random.GetString();
+            //this.firstName = firstName ?? TestContext.CurrentContext.Random.GetString();
             this.lastName = lastName ?? "Mondero";
-            this.email = email ?? TestContext.CurrentContext.Random.GetString() + "@gmail.com";
+            //this.email = email ?? TestContext.CurrentContext.Random.GetString() + "@gmail.com";
+            this.email = email ?? "julie@gmail.com";
             this.phone = phone ?? "0210280000";
             this.addressLine1 = addressLine1 ?? "Cockayne";
             this.addressLine2 = addressLine2 ?? "Crescent";
@@ -48,10 +51,11 @@ namespace API_Testing_March2021.MODEL
             this.state = state ?? "AL";
             this.zipCode = zipCode ?? "062015";
             this.comment = comment ?? "Api Testing going";
-            this.itemNumber = itemNumber ?? "012";
+            this.itemNumber = itemNumber ?? "12";
+            this.id = id ?? " ";
+            
            
         }
-
 
     }
 }

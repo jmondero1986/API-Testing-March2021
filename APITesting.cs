@@ -1,4 +1,5 @@
 using API_Testing_March2021.MODEL;
+using FluentAssertions;
 using Newtonsoft.Json;
 using NUnit.Framework;
 using RestSharp;
@@ -8,6 +9,35 @@ namespace API_Testing_March2021
 {
     public class Tests
     {
+
+
+        [TestCase("Julie")]
+       
+        public void FluentAssertion(string firstName)
+        {
+
+            BillingOrder expectedData = new BillingOrder(); //request
+
+            BillingOrder actualData = new BillingOrder(firstName: "Elijah", city: "Cebu"); //response
+           
+
+            //assertion failed (Style 1)
+
+            //Assert.Multiple(() =>
+            //{
+
+            //    Assert.AreEqual(expectedData.firstName, actualData.firstName);
+            //    Assert.AreEqual(expectedData.lastName, actualData.lastName);
+
+            //});
+
+            expectedData.Should().BeEquivalentTo(actualData);
+
+
+        }
+
+
+
         [TestCase ("Test")]
         public void TestCase_POST(string fname)
 
@@ -28,19 +58,31 @@ namespace API_Testing_March2021
             //Changing the name to new one, but will call all the default value
             // BillingOrder expectedData = new BillingOrder(firstName: "Julie");
 
-            BillingOrder expectedData = new BillingOrder();
+
+            //creating data object
+
+            BillingOrder expectedBillingOrder = new BillingOrder();
 
             //CONVERT ORDER TO JSON
-            var jsonBody = JsonConvert.SerializeObject(expectedData);
+            var jsonBody = JsonConvert.SerializeObject(expectedBillingOrder);
+
+            //posting data - creating -----API
             IRestResponse response = POST(jsonBody);
+
             TestContext.WriteLine(response.Content);
 
             //Deserialize
+            //converting response content to object
 
-            BillingOrder actualData  = JsonConvert.DeserializeObject<BillingOrder>(response.Content);
-            TestContext.WriteLine(actualData.firstName);
-            Assert.AreEqual(expectedData.firstName, actualData.firstName);
-            Assert.AreEqual(expectedData.lastName, actualData.lastName);
+            BillingOrder actualBillingOrder  = JsonConvert.DeserializeObject<BillingOrder>(response.Content);
+
+            //hack
+            // expectedData.id = actualData.id;
+
+            //TestContext.WriteLine(actualData.firstName);
+
+            expectedBillingOrder.Should().BeEquivalentTo(actualBillingOrder,  options => options.Excluding(o => o.id));
+
         }
 
         //API METHODS
